@@ -80,3 +80,11 @@ FROM
 ) AS Orders;
 
 10. Are there customers who purchased frequently but spent less, and customers who purchased rarely but generated high revenue?
+SELECT
+    CustomerID,
+    COUNT(DISTINCT InvoiceNo) AS Number_of_Orders,
+    SUM(Quantity * UnitPrice) AS Total_Revenue
+FROM inter1.first
+GROUP BY CustomerID
+ORDER BY Total_Revenue DESC, Number_of_Orders DESC
+LIMIT 20;
