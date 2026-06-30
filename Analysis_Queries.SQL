@@ -41,11 +41,42 @@ GROUP BY CustomerID
 ORDER BY Total_Spending DESC
 LIMIT 10
 6. How do sales performance and revenue change month by month?
-
+SELECT
+    YEAR(InvoiceDate) AS Year,
+    MONTH(InvoiceDate) AS Month,
+    SUM(Quantity * UnitPrice) AS Monthly_Revenue
+FROM inter1.first
+GROUP BY 
+    YEAR(InvoiceDate),
+    MONTH(InvoiceDate)
+ORDER BY Year, Month;
 7. What are the busiest sales periods based on the number of transactions?
+SELECT
+    HOUR(InvoiceDate) AS Sales_Hour,
+    COUNT(InvoiceNo) AS Number_of_Transactions
+FROM inter1.first
+GROUP BY HOUR(InvoiceDate)
+ORDER BY Number_of_Transactions DESC;
 
 8. Which products have the highest average selling price?
+SELECT
+    Description,
+    AVG(UnitPrice) AS Average_Price
+FROM inter1.first
+GROUP BY Description
+ORDER BY Average_Price DESC
+LIMIT 10;
 
 9. What is the average order value, and how does customer purchasing behavior change?
+SELECT
+    AVG(Order_Total) AS Average_Order_Value
+FROM
+(
+    SELECT
+        InvoiceNo,
+        SUM(Quantity * UnitPrice) AS Order_Total
+    FROM inter1.first
+    GROUP BY InvoiceNo
+) AS Orders;
 
 10. Are there customers who purchased frequently but spent less, and customers who purchased rarely but generated high revenue?
